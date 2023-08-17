@@ -1,72 +1,108 @@
-import './App.css'
-import Contact from './components/contact/Contact';
-import Events from './components/Events/Events';
-import Footer from './components/footer/Footer';
-import Hero from './components/hero/Hero';
-import Navbar from './components/navbar/navbar';
-import Sliders from './components/sliders/Sliders';
+import "./App.css";
+import Contact from "./components/contact/Contact";
+import Events from "./components/Events/Events";
+import Footer from "./components/footer/Footer";
+import Footer2 from "./components/footer/Footer2";
+import Hero from "./components/hero/Hero";
+import Myaccount from "./components/myaccount/Myaccount";
+import Navbar from "./components/navbar/navbar";
+import Sliders from "./components/sliders/Sliders";
+import Fruits from "./components/fruits/Fruits";
+import Description from "./components/description/Description";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginReg from "./components/auth/LoginReg";
+import Helper from "./components/helper/Helper";
 
 const cardsData = [
   {
-    label: "Handbag",
+    label: "Tomatoes",
     alt: "image3",
-    url: "https://static.wixstatic.com/media/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg",
-    price: "499"
+    url: "https://www.collinsdictionary.com/images/full/tomato_281240360.jpg",
+    price: "70 per Kg",
   },
   {
-    label: "Sweater",
+    label: "Potatoes",
     alt: "image4",
-    url: "https://static.wixstatic.com/media/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg",
-    price: "2,099"
+    url: "https://m.media-amazon.com/images/I/313dtY-LOEL.jpg",
+    price: "30 per Kg",
   },
   {
-    label: "Flower Vase",
-    alt: "image5",
-    url: "https://static.wixstatic.com/media/22e53e_2fee033b2eca46cab4eec7fa74e99c31~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_2fee033b2eca46cab4eec7fa74e99c31~mv2.jpg",
-    price: "1,099"
-  },
-  {
-    label: "T-Shirt",
-    alt: "image6",
-    url: "https://static.wixstatic.com/media/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg",
-    price: "449"
-  },
-]
-;
-const cardsData2 = [
-  {
-    label: "Handbag",
-    alt: "image3",
-    url: "https://static.wixstatic.com/media/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg",
-    price: "499"
-  },
-  {
-    label: "Sweater",
+    label: "Lady Finger",
     alt: "image4",
-    url: "https://static.wixstatic.com/media/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg",
-    price: "2,099"
+    url: "https://m.media-amazon.com/images/I/61M7ZbTTlVL._AC_UF1000,1000_QL80_.jpg",
+    price: "50 per Kg",
   },
   {
-    label: "T-Shirt",
+    label: "Beetroot",
     alt: "image6",
-    url: "https://static.wixstatic.com/media/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg",
-    price: "449"
+    url: "https://m.media-amazon.com/images/I/616PXhYj8iL._AC_UF1000,1000_QL80_.jpg",
+    price: "80 per Kg",
+  },
+  {
+    label: "Carrot",
+    alt: "image6",
+    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
+    price: "30 per Kg",
   },
 ];
+
+const router = createBrowserRouter([
+  {
+    path: "/myaccount",
+    element: (
+      <>
+        <Myaccount></Myaccount>,<Footer2></Footer2>
+      </>
+    ),
+  },
+  {
+    path: "/fruits",
+    element: (
+      <>
+        <Fruits></Fruits>,<Footer></Footer>
+      </>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <>
+        <LoginReg></LoginReg>,<Footer2></Footer2>
+      </>
+    ),
+  },
+  {
+    path: "/about",
+    element: (
+      <>
+        <Helper></Helper>
+        <Description></Description>,<Footer></Footer>
+      </>
+    ),
+  },
+  {
+    path: "/*",
+    element: (
+      <>
+        <Hero></Hero>
+        <Sliders data={cardsData} title={"BEST SELLERS"}></Sliders>
+        <Sliders data={cardsData} title={"BEST OFFERS"}></Sliders>
+        <Sliders data={cardsData} title={"KITCHEN MUST HAVE's"}></Sliders>
+        <Events></Events>
+        <Contact></Contact>
+        <Footer></Footer>
+      </>
+    ),
+  },
+]);
 
 function App() {
   return (
     <>
       <Navbar></Navbar>
-      <Hero></Hero>
-      <Sliders data={cardsData} title={"BEST SELLERS"}></Sliders>
-      <Sliders data={cardsData2} title={"BEST OFFERS"}></Sliders>
-      <Sliders data={cardsData} title={"KITCHEN MUST HAVE's"}></Sliders>
-      <Events></Events>
-      <Contact></Contact>
-      <Footer></Footer>
+      <RouterProvider router={router}></RouterProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
