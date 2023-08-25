@@ -13,6 +13,7 @@ const Card = ({
   productId,
 }) => {
   const [qty, setQty] = useState(1);
+  discount = Math.max(discount, 5);
   const userEmailString = Cookies.get("_auth_state");
   // const [isUserAuth, SetIsUserAuth] = useState(false);
   const navigate = useNavigate();
@@ -70,9 +71,9 @@ const Card = ({
           Rs.&nbsp;<del>{price}</del>&nbsp;
           {Math.floor(price * (1 - discount / 100))}&nbsp;per&nbsp;Kg
         </p>
-        <p className="card-desc">
+        {/* <p className="card-desc">
           {desc} | | | {category}
-        </p>
+        </p> */}
       </div>
       <div className="card-bottom">
         <div className="card-maths">

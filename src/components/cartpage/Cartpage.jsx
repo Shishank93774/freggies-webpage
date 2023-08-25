@@ -1,88 +1,148 @@
 import { useState } from "react";
-import Card from "../card/Card";
 import "./Cartpage.css"; // Import your CSS file
-
-const productsData = [
-  {
-    id: 1,
-    name: "Carrot",
-    image:
-      "https://t3.ftcdn.net/jpg/02/99/43/48/360_F_299434842_UF1e0k44KUpkdtAEu0XbbPVnTHFuRwAm.jpg",
-    price: 40,
-  },
-  {
-    id: 2,
-    name: "Brocoli",
-    image:
-      "https://t4.ftcdn.net/jpg/01/38/59/65/360_F_138596527_vo9I8cKl20phDuIauIEfeQ2mWGw60Wjm.jpg",
-    price: 60,
-  },
-  {
-    id: 3,
-    name: "Cauliflower",
-    image:
-      "https://media.istockphoto.com/id/186828790/photo/cauliflower-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=oLL9OeCwhHolL-MqXb3CZEkL0NyE483_vEqm3Tj0Lzo=",
-    price: 30,
-  },
-  {
-    id: 4,
-    name: "Onion",
-    image:
-      "https://thumbs.dreamstime.com/b/red-onion-cut-half-isolated-white-background-red-onion-cut-half-isolated-white-background-clipping-path-full-105173215.jpg",
-    price: 50,
-  },
-  {
-    id: 5,
-    name: "Potato",
-    image:
-      "https://img.freepik.com/premium-photo/potato-vegetable-isolated-white-background_42033-117.jpg",
-    price: 50,
-  },
-  {
-    id: 6,
-    name: "Garlic",
-    image:
-      "https://img.freepik.com/premium-photo/garlic-white-background-garlic-is-medicinal-plant-is-kind-spice_319982-314.jpg?w=2000",
-    price: 45,
-  },
-];
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 function Cartpage() {
+  const userEmailString = Cookies.get("_auth_state");
   const [cartItems, setCartItems] = useState([]);
+  const navigate = useNavigate();
+  // const addToCart = (product) => {
+  //   setCartItems([...cartItems, { ...product, quantity: 1 }]);
+  // };
 
-  const addToCart = (product) => {
-    setCartItems([...cartItems, { ...product, quantity: 1 }]);
+  const increaseQuantity = async (productId) => {
+    let newItems = cartItems.map((product) => {
+      if (product._id === productId) {
+        return { ...product, qty: product.qty + 1 };
+      }
+      return product;
+    });
+    const newUserProducts = newItems.map((item) => {
+      return { id: item._id, qty: item.qty };
+    });
+    const userId = await getUserId();
+    await axios.patch("http://localhost:3001/api/users/" + userId, {
+      boughtProducts: newUserProducts,
+    });
+    setCartItems(newItems);
   };
 
-  const increaseQuantity = (index) => {
-    const updatedCartItems = [...cartItems];
-    updatedCartItems[index].quantity++;
-    setCartItems(updatedCartItems);
+  const decreaseQuantity = async (productId) => {
+    let newItems = cartItems.map((product) => {
+      if (product._id === productId) {
+        return { ...product, qty: product.qty - 1 };
+      }
+      return product;
+    });
+    newItems = newItems.filter((item) => item.qty > 0);
+    const newUserProducts = newItems.map((item) => {
+      return { id: item._id, qty: item.qty };
+    });
+    const userId = await getUserId();
+    await axios.patch("http://localhost:3001/api/users/" + userId, {
+      boughtProducts: newUserProducts,
+    });
+    setCartItems(newItems);
   };
 
-  const decreaseQuantity = (index) => {
-    const updatedCartItems = [...cartItems];
-    if (updatedCartItems[index].quantity > 1) {
-      updatedCartItems[index].quantity--;
-      setCartItems(updatedCartItems);
-    }
-  };
-
-  const removeProduct = (index) => {
-    const updatedCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCartItems);
+  const removeProduct = async (productId) => {
+    let newItems = cartItems.filter((item) => item._id !== productId);
+    const newUserProducts = newItems.map((item) => {
+      return { id: item._id, qty: item.qty };
+    });
+    const userId = await getUserId();
+    await axios.patch("http://localhost:3001/api/users/" + userId, {
+      boughtProducts: newUserProducts,
+    });
+    setCartItems(newItems);
   };
 
   const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.qty, 0);
+  };
+
+  const getTotalSavings = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.price * (item.discount / 100) * item.qty,
       0
     );
   };
 
   const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.qty, 0);
   };
+
+  const getUserId = async () => {
+    if (userEmailString) {
+      const userEmail = JSON.parse(userEmailString).email;
+      try {
+        const userIdResponse = await axios.get(
+          "http://localhost:3001/api/users/getUserId/" + userEmail
+        );
+        const userId = userIdResponse.data;
+        return userId;
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const getUserProducts = async (userId) => {
+    const userProductsResponse = await axios.get(
+      "http://localhost:3001/api/users/" + userId + "/products"
+    );
+    return userProductsResponse.data;
+  };
+
+  useEffect(() => {
+    const initialCall = async () => {
+      console.log("Intializing Cart");
+      if (userEmailString) {
+        try {
+          const userId = await getUserId();
+          const userProducts = await getUserProducts(userId);
+          console.log(userId);
+          console.log(userProducts);
+
+          const getProductInfo = async (productId) => {
+            const response = await axios.get(
+              "http://localhost:3001/api/products/getInfo/" + productId
+            );
+            console.log("respone", response);
+            return response.data;
+          };
+
+          const items = await Promise.all(
+            userProducts.map(async ({ id, qty }) => {
+              const productInfo = await getProductInfo(id);
+              console.log("product info", productInfo);
+              const { name, price, discount, photoArray, _id } = productInfo;
+              return {
+                name,
+                price,
+                discount,
+                photoArray,
+                qty,
+                _id,
+              };
+            })
+          );
+
+          setCartItems(items);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        navigate("/login");
+      }
+    };
+    initialCall();
+  }, []);
 
   return (
     <>
@@ -91,10 +151,10 @@ function Cartpage() {
           <div className="cart-items">
             <h1>Cart</h1>
             {cartItems.map((item, index) => (
-              <div className="cart-item" key={item.index}>
+              <div className="cart-item" key={item._id}>
                 <div className="product-image">
                   <img
-                    src={item.image}
+                    src={item.photoArray[0].url}
                     alt={item.name}
                     className="card-image"
                   />
@@ -105,13 +165,13 @@ function Cartpage() {
                 </div>
 
                 <div className="quantity-controls">
-                  <button onClick={() => decreaseQuantity(index)}>-</button>
-                  <p>{item.quantity}</p>
-                  <button onClick={() => increaseQuantity(index)}>+</button>
+                  <button onClick={() => decreaseQuantity(item._id)}>-</button>
+                  <p>{item.qty}</p>
+                  <button onClick={() => increaseQuantity(item._id)}>+</button>
                 </div>
                 <button
                   className="remove-button"
-                  onClick={() => removeProduct(index)}
+                  onClick={() => removeProduct(item._id)}
                 >
                   Remove
                 </button>
@@ -132,6 +192,10 @@ function Cartpage() {
                   <p>Subtotal</p>
                 </div>
                 <div className="details">
+                  {" "}
+                  <p>You Saved</p>
+                </div>
+                <div className="details">
                   <p>Delivery Charges</p>
                 </div>
               </div>
@@ -141,7 +205,11 @@ function Cartpage() {
                 </div>
                 <div className="details">
                   {" "}
-                  <p>Rs.{getTotalPrice().toFixed(2)}</p>
+                  <p>Rs.{getTotalPrice().toFixed(2)} </p>
+                </div>
+                <div className="details">
+                  {" "}
+                  <p>Rs.{getTotalSavings().toFixed(2)}</p>
                 </div>
                 <div className="details">
                   <p>Rs.0</p>
@@ -154,14 +222,16 @@ function Cartpage() {
                 <p className="details">Total </p>
               </div>
               <div className="detail-values">
-                <p className="price-details">Rs.{getTotalPrice().toFixed(2)}</p>
+                <p className="price-details">
+                  Rs.{(getTotalPrice() - getTotalSavings()).toFixed(2)}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         <div className="total-price">
-          <p>Cart Total: Rs.{getTotalPrice().toFixed(2)}</p>
+          <p>Checkout Now!</p>
         </div>
       </div>
     </>

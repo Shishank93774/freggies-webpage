@@ -29,7 +29,7 @@ const Sliders = ({ title }) => {
         <Swiper
           navigation={true}
           modules={[Navigation]}
-          spaceBetween={10}
+          spaceBetween={0}
           slidesPerView={4}
         >
           {data.map((card, idx) => {
@@ -38,7 +38,7 @@ const Sliders = ({ title }) => {
                 <Card
                   name={card.name}
                   price={card.price}
-                  url={card.url}
+                  url={(card.photoArray[0]).url}
                   discount={card.discount}
                   desc={card.desc}
                   category={card.category}

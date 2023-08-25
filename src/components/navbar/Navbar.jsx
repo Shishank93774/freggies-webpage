@@ -1,5 +1,7 @@
 import "./Navbar.css";
 import Cookies from "js-cookie";
+import { FiShoppingCart } from "react-icons/fi";
+
 const Navbar = () => {
   const account = Cookies.get("freggie-firstname") || "Account";
   return (
@@ -11,7 +13,6 @@ const Navbar = () => {
             {" "}
             <a href="/"> Home </a>{" "}
           </li>
-          {/* <li className="link"> <a href="/about"> About </a> </li> */}
           {account === "Account" && (
             <li className="link">
               {" "}
@@ -24,15 +25,21 @@ const Navbar = () => {
           </li>
           <li className="link">
             {" "}
-            <a href="/cart"> Cart </a>{" "}
-          </li>
-          <li className="link">
-            {" "}
             <a href="/fruits"> Fruits </a>{" "}
           </li>
           <li className="link">
             {" "}
             <a href="/vegetables"> Vegetables </a>{" "}
+          </li>
+          <li className="link">
+            {" "}
+            <a href="/contact"> Contact </a>{" "}
+          </li>
+          <li className="navbar-link cart-trolley--link">
+            <a href="/cart">
+              {" "}
+              <FiShoppingCart className="cart-trolley" />{" "}
+            </a>
           </li>
         </ul>
       </div>
