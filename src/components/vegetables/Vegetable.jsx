@@ -204,6 +204,7 @@ function Vegetable() {
               discount={card.discount}
               desc={card.desc}
               category={card.category}
+              productId={card._id}
             ></Card>
           ))}
         </div>

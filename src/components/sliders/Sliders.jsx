@@ -18,7 +18,6 @@ const Sliders = ({ title }) => {
   useEffect(() => {
     const getAllProducts = async () => {
       const vals = (await axios.get("http://localhost:3001/api/products")).data;
-      console.log(vals);
       setdata(vals);
     };
     getAllProducts();
@@ -34,7 +33,6 @@ const Sliders = ({ title }) => {
           slidesPerView={4}
         >
           {data.map((card, idx) => {
-            console.log(card);
             return (
               <SwiperSlide key={idx}>
                 <Card
@@ -44,6 +42,7 @@ const Sliders = ({ title }) => {
                   discount={card.discount}
                   desc={card.desc}
                   category={card.category}
+                  productId={card._id}
                 ></Card>
               </SwiperSlide>
             );

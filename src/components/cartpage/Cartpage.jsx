@@ -163,20 +163,6 @@ function Cartpage() {
         <div className="total-price">
           <p>Cart Total: Rs.{getTotalPrice().toFixed(2)}</p>
         </div>
-
-        <div className="product-page">
-          <h2>Products</h2>
-          <div className="products">
-            {productsData.map((product) => (
-              <Card 
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              url={product.image}
-              ></Card>
-            ))}
-          </div>
-        </div>
       </div>
     </>
   );

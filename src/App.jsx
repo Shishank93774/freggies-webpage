@@ -8,85 +8,84 @@ import Myaccount from "./components/myaccount/Myaccount";
 import Navbar from "./components/navbar/navbar";
 import Sliders from "./components/sliders/Sliders";
 import Fruits from "./components/fruits/Fruits";
-import Description from "./components/description/Description";
 import Vegetable from "./components/vegetables/Vegetable";
 import Cartpage from "./components/cartpage/Cartpage";
-// import LoginReg from "./components/auth/LoginReg";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Helper from "./components/helper/Helper";
-
-const router = createBrowserRouter([
-  {
-    path: "/myaccount",
-    element: (
-      <>
-        <Myaccount></Myaccount>,<Footer2></Footer2>
-      </>
-    ),
-  },
-  {
-    path: "/fruits",
-    element: (
-      <>
-        <Fruits></Fruits>,<Footer></Footer>
-      </>
-    ),
-  },
-  {
-    path: "/about",
-    element: (
-      <>
-        <Helper></Helper>
-        <Description></Description>,<Footer></Footer>
-      </>
-    ),
-  },
-  {
-    path: "/vegetables",
-    element: (
-      <>
-        <Vegetable></Vegetable>
-      </>
-    ),
-  },
-  {
-    path: "/cart",
-    element: (
-      <>
-        <Cartpage></Cartpage>
-      </>
-    ),
-  },
-  // {
-  //   path: "/login",
-  //   element: (
-  //     <>
-  //       <Navbar></Navbar>
-  //       <LoginReg></LoginReg>
-  //     </>
-  //   ),
-  // },
-  {
-    path: "/*",
-    element: (
-      <>
-        <Hero></Hero>
-        <Sliders type={"fruits"} title={"BEST SELLERS"}></Sliders>
-        <Sliders type={"vegetables"} title={"BEST OFFERS"}></Sliders>
-        {/* <Sliders data={cardsData} type={"Fruits"} title={"KITCHEN MUST HAVE's"}></Sliders> */}
-        <Events></Events>
-        <Contact></Contact>
-        <Footer></Footer>
-      </>
-    ),
-  },
-]);
+import LoginReg from "./components/login/LoginReg";
+import { Routes, Route } from "react-router";
+import { RequireAuth } from "react-auth-kit";
 
 function App() {
   return (
     <>
-      <Navbar></Navbar>
-      <RouterProvider router={router}></RouterProvider>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <>
+              <Navbar></Navbar>
+              <LoginReg></LoginReg>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/cart"
+          element={
+            <RequireAuth loginPath="/login">
+              <Navbar></Navbar>
+              <Cartpage></Cartpage>
+              <Footer></Footer>
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/myaccount"
+          element={
+            <RequireAuth loginPath="/login">
+              <>
+                <Navbar></Navbar>
+                <Myaccount></Myaccount>
+                <Footer2></Footer2>
+              </>
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/vegetables"
+          element={
+            <>
+              <Navbar></Navbar>
+              <Vegetable></Vegetable>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/fruits"
+          element={
+            <>
+              <Navbar></Navbar>
+              <Fruits></Fruits>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/*"
+          element={
+            <>
+              <Navbar></Navbar>
+              <Hero></Hero>
+              <Sliders type={"fruits"} title={"BEST SELLERS"}></Sliders>
+              <Sliders type={"vegetables"} title={"BEST OFFERS"}></Sliders>
+              <Sliders type={"Fruits"} title={"KITCHEN MUST HAVE's"}></Sliders>
+              <Events></Events>
+              <Contact></Contact>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+      </Routes>
     </>
   );
 }
