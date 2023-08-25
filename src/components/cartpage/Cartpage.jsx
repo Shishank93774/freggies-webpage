@@ -168,7 +168,11 @@ function Cartpage() {
           <h2>Products</h2>
           <div className="products">
             {productsData.map((product) => (
-              <Card key={product.id}
+              <Card 
+              key={product.id}
+              name={product.name}
+              price={product.price}
+              url={product.image}
               ></Card>
             ))}
           </div>

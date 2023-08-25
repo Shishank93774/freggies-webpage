@@ -15,64 +15,6 @@ import Cartpage from "./components/cartpage/Cartpage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Helper from "./components/helper/Helper";
 
-const cardsData = [
-  {
-    name: "Tomatoes",
-    alt: "image3",
-    url: "https://www.collinsdictionary.com/images/full/tomato_281240360.jpg",
-    price: "70",
-    discount: "50",
-  },
-  {
-    name: "Potatoes",
-    alt: "image4",
-    url: "https://m.media-amazon.com/images/I/313dtY-LOEL.jpg",
-    price: "30",
-  },
-  {
-    name: "Lady Finger",
-    alt: "image4",
-    url: "https://m.media-amazon.com/images/I/61M7ZbTTlVL._AC_UF1000,1000_QL80_.jpg",
-    price: "50",
-  },
-  {
-    name: "Beetroot",
-    alt: "image6",
-    url: "https://m.media-amazon.com/images/I/616PXhYj8iL._AC_UF1000,1000_QL80_.jpg",
-    price: "80",
-  },
-  {
-    name: "Carrot",
-    alt: "image6",
-    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
-    price: "30",
-  },
-  {
-    name: "Carrot",
-    alt: "image6",
-    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
-    price: "30",
-  },
-  {
-    name: "Carrot",
-    alt: "image6",
-    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
-    price: "30",
-  },
-  {
-    name: "Carrot",
-    alt: "image6",
-    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
-    price: "30",
-  },
-  {
-    name: "Carrot",
-    alt: "image6",
-    url: "https://kiranacompare.com/wp-content/uploads/2020/11/The-lost-plot-growing-carrots-iStock-471680420.jpg",
-    price: "30",
-  },
-];
-
 const router = createBrowserRouter([
   {
     path: "/myaccount",
@@ -129,9 +71,9 @@ const router = createBrowserRouter([
     element: (
       <>
         <Hero></Hero>
-        <Sliders data={cardsData} title={"BEST SELLERS"}></Sliders>
-        <Sliders data={cardsData} title={"BEST OFFERS"}></Sliders>
-        <Sliders data={cardsData} title={"KITCHEN MUST HAVE's"}></Sliders>
+        <Sliders type={"fruits"} title={"BEST SELLERS"}></Sliders>
+        <Sliders type={"vegetables"} title={"BEST OFFERS"}></Sliders>
+        {/* <Sliders data={cardsData} type={"Fruits"} title={"KITCHEN MUST HAVE's"}></Sliders> */}
         <Events></Events>
         <Contact></Contact>
         <Footer></Footer>

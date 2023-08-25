@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import "./Vegetable.css";
 import Card from "../card/Card";
 
@@ -158,6 +159,17 @@ function Vegetable() {
     setFilteredProducts(filtered);
   };
 
+  useEffect(() => {
+    const getAllFruits = async () => {
+      const data = (
+        await axios.get("http://localhost:3001/api/products/vegetables")
+      ).data;
+      console.log(data);
+      setFilteredProducts(data);
+    };
+    getAllFruits();
+  }, []);
+
   return (
     <>
       <div className="fruits-container">
@@ -183,10 +195,16 @@ function Vegetable() {
         </div>
 
         <div className="product-list">
-          {filteredProducts.map((product) => (
-            <Card key={product.id}>
-            
-            </Card>
+          {filteredProducts.map((card, idx) => (
+            <Card
+              key={idx}
+              name={card.name}
+              price={card.price}
+              url={card.url}
+              discount={card.discount}
+              desc={card.desc}
+              category={card.category}
+            ></Card>
           ))}
         </div>
       </div>

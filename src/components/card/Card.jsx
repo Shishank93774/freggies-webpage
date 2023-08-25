@@ -6,6 +6,7 @@ const Card = ({
   url = "https://www.bigbasket.com/media/uploads/p/l/10000150_19-fresho-onion.jpg",
   price = 599,
   discount = 20,
+  category,
 }) => {
   const [qty, setQty] = useState(1);
 
@@ -22,7 +23,7 @@ const Card = ({
         <p className="card-price">
           Rs.&nbsp;<del>{price}</del>&nbsp;{Math.floor(price * (1 - discount / 100))}&nbsp;per&nbsp;Kg
         </p>
-        <p className="card-desc">{desc}</p>
+        <p className="card-desc">{desc} | | |  {category}</p>
       </div>
       <div className="card-bottom">
         <div className="card-maths">
