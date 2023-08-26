@@ -101,26 +101,20 @@ function Cartpage() {
 
   useEffect(() => {
     const initialCall = async () => {
-      console.log("Intializing Cart");
       if (userEmailString) {
         try {
           const userId = await getUserId();
           const userProducts = await getUserProducts(userId);
-          console.log(userId);
-          console.log(userProducts);
-
           const getProductInfo = async (productId) => {
             const response = await axios.get(
               "http://localhost:3001/api/products/getInfo/" + productId
             );
-            console.log("respone", response);
             return response.data;
           };
 
           const items = await Promise.all(
             userProducts.map(async ({ id, qty }) => {
               const productInfo = await getProductInfo(id);
-              console.log("product info", productInfo);
               const { name, price, discount, photoArray, _id } = productInfo;
               return {
                 name,

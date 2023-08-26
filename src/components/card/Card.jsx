@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import axios from "axios";
+
 const Card = ({
   name = "Name",
   desc = "This is a fabulous product and you should buy this asap because...",
@@ -11,6 +12,8 @@ const Card = ({
   discount = 20,
   category,
   productId,
+  showLoginFailure,
+  showAddingSuccess,
 }) => {
   const [qty, setQty] = useState(1);
   discount = Math.max(discount, 5);
@@ -20,10 +23,12 @@ const Card = ({
   // if(userEmail) SetIsUserAuth(true);
   const handleAdding = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
     // request to user API to update his cart's data
     if (userEmailString) {
       const userEmail = JSON.parse(userEmailString).email;
       try {
+        // console.log("adding ", qty, name);
         const userId = (
           await axios.get(
             "http://localhost:3001/api/users/getUserId/" + userEmail
@@ -48,65 +53,71 @@ const Card = ({
         await axios.patch("http://localhost:3001/api/users/" + userId, {
           boughtProducts: userProducts,
         });
+        showAddingSuccess(name, qty);
       } catch (err) {
         console.log(err);
       }
     } else {
-      navigate("/login");
+      showLoginFailure();
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     }
     // reset current qty
     setQty(1);
   };
   return (
-    <div className="card-container">
-      <div className="card-img-container">
-        <div className="card-discount-overlay">
-          <p className="card-discount">Get {discount}%&nbsp;Off</p>
+    <>
+      <div className="card-container">
+        <div className="card-img-container">
+          <div className="card-discount-overlay">
+            <p className="card-discount">Get {discount}%&nbsp;Off</p>
+          </div>
+          <img src={url} alt="prod" />
         </div>
-        <img src={url} alt="prod" />
-      </div>
-      <div className="card-body">
-        <h3 className="card-title">{name ? name : "Name"}</h3>
-        <p className="card-price">
-          Rs.&nbsp;<del>{price}</del>&nbsp;
-          {Math.floor(price * (1 - discount / 100))}&nbsp;per&nbsp;Kg
-        </p>
-        {/* <p className="card-desc">
+        <div className="card-body">
+          <h3 className="card-title">{name ? name : "Name"}</h3>
+          <p className="card-price">
+            Rs.&nbsp;<del>{price}</del>&nbsp;
+            {Math.floor(price * (1 - discount / 100))}&nbsp;per&nbsp;Kg
+          </p>
+          {/* <p className="card-desc">
           {desc} | | | {category}
         </p> */}
-      </div>
-      <div className="card-bottom">
-        <div className="card-maths">
-          <button
-            className="card-operator"
-            onClick={(e) => {
-              e.preventDefault();
-              if (qty > 1) setQty(qty - 1);
-            }}
-          >
-            -
-          </button>
-          <input
-            className="card-qty-show"
-            placeholder="1"
-            type="text"
-            value={qty}
-          />
-          <button
-            className="card-operator"
-            onClick={(e) => {
-              e.preventDefault();
-              if (qty < 99) setQty(qty + 1);
-            }}
-          >
-            +
+        </div>
+        <div className="card-bottom">
+          <div className="card-maths">
+            <button
+              className="card-operator"
+              onClick={(e) => {
+                e.preventDefault();
+                if (qty > 1) setQty(qty - 1);
+              }}
+            >
+              -
+            </button>
+            <input
+              className="card-qty-show"
+              placeholder="1"
+              type="text"
+              value={qty}
+            />
+            <button
+              className="card-operator"
+              onClick={(e) => {
+                e.preventDefault();
+                if (qty < 99) setQty(qty + 1);
+              }}
+            >
+              +
+            </button>
+          </div>
+          <button className="card-add" onClick={handleAdding}>
+            ADD
           </button>
         </div>
-        <button className="card-add" onClick={handleAdding}>
-          ADD
-        </button>
       </div>
-    </div>
+    </>
   );
 };
 

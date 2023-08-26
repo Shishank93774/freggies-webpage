@@ -11,6 +11,8 @@ import Fruits from "./components/fruits/Fruits";
 import Vegetable from "./components/vegetables/Vegetable";
 import Cartpage from "./components/cartpage/Cartpage";
 import LoginReg from "./components/login/LoginReg";
+import ResetPassword from "./components/login/ResetPassword";
+import SendPasswordResetEmail from "./components/login/SendPasswordResetEmail";
 import { Routes, Route } from "react-router";
 import { RequireAuth } from "react-auth-kit";
 
@@ -24,6 +26,16 @@ function App() {
             <>
               <Navbar></Navbar>
               <LoginReg></LoginReg>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/sendpasswordresetemail"
+          element={
+            <>
+              <Navbar></Navbar>
+              <SendPasswordResetEmail></SendPasswordResetEmail>
               <Footer></Footer>
             </>
           }

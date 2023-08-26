@@ -4,6 +4,8 @@ import "./Vegetable.css";
 import Card from "../card/Card";
 import ReactPaginate from "react-paginate";
 import CommonSection from "../commonsection/CommonSection";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const itemsPerPage = 12;
 
@@ -14,6 +16,9 @@ function Vegetable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+
+  const showLoginFailure = () => toast.warning("Please login first!");
+  const showAddingSuccess = () => toast.success(`Item added successfully`);
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
@@ -84,6 +89,18 @@ function Vegetable() {
   }, []);
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="vegetables-page">
         <CommonSection title="Vegetables" />
         <div className="search-sort">
@@ -145,6 +162,8 @@ function Vegetable() {
                 desc={product.desc}
                 category={product.category}
                 productId={product._id}
+                showLoginFailure={showLoginFailure}
+                showAddingSuccess={showAddingSuccess}
               ></Card>
             ))}
           </div>

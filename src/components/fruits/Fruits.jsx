@@ -4,6 +4,8 @@ import Card from "../card/Card";
 import ReactPaginate from "react-paginate";
 import CommonSection from "../commonsection/CommonSection";
 import "./Fruits.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const itemsPerPage = 12;
 
@@ -15,6 +17,8 @@ function Fruits() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const showLoginFailure = () => toast.warning("Please login first!");
+  const showAddingSuccess = () => toast.success(`Item added successfully`);
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
@@ -85,6 +89,18 @@ function Fruits() {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="fruits-page">
         <CommonSection title="Fruits" />
         <div className="search-sort">
@@ -146,6 +162,8 @@ function Fruits() {
                 desc={product.desc}
                 category={product.category}
                 productId={product._id}
+                showAddingSuccess={showAddingSuccess}
+                showLoginFailure={showLoginFailure}
               ></Card>
             ))}
           </div>

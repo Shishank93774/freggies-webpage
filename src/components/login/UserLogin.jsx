@@ -4,6 +4,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserLogin = () => {
   const [error, setError] = useState({
@@ -11,6 +13,8 @@ const UserLogin = () => {
     msg: "",
     type: "",
   });
+  const showSuccess = () => toast.success("Yoohooo! Welcome Back!");
+  const showFailure = () => toast.error("Oops! Wrong Credentials");
   // SHISH
   const signIn = useSignIn();
   const navigate = useNavigate();
@@ -21,7 +25,6 @@ const UserLogin = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(actualData);
     if (actualData.email && actualData.password) {
       document.getElementById("login-form").reset();
       try {
@@ -47,11 +50,13 @@ const UserLogin = () => {
         const userFirstName = userData.firstname;
         Cookies.set("freggie-firstname", userFirstName);
         setError({ status: true, msg: "Login Success", type: "success" });
+        showSuccess();
         setTimeout(() => {
           navigate("/myaccount");
         }, 3000);
       } catch (err) {
-        console.log(err);
+        console.log("MYerr", err);
+        showFailure();
       }
     } else {
       setError({ status: true, msg: "All fields are required", type: "error" });
@@ -60,6 +65,18 @@ const UserLogin = () => {
   // SHISH
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Box
         component="form"
         noValidate
@@ -89,6 +106,7 @@ const UserLogin = () => {
         <Box textAlign="center">
           <Button
             type="submit"
+            color="success"
             variant="contained"
             sx={{ mt: 3, mb: 2, px: 5 }}
           >
