@@ -4,6 +4,10 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+
+const STRIPE_KEY ="pk_test_51NqgctSJNVDmGaidyxFsc083hMIezFYZWwKik7w1yaDqxcMy9SBUXTitce1S9Cm6ePScXTw7G3NrheqiDXSyva0400HumaHFDv";
+
 function Checkout1({ setNumberOfProducts }) {
   const userEmailString = Cookies.get("_auth_state");
   const [cartItems, setCartItems] = useState([]);
@@ -89,7 +93,7 @@ function Checkout1({ setNumberOfProducts }) {
             address: userData.address,
             phone: userData.phone,
           });
-          console.log(shippingData);
+          // console.log(shippingData);
           const userProducts = await getUserProducts(userId);
           const getProductInfo = async (productId) => {
             const response = await axios.get(
@@ -123,12 +127,28 @@ function Checkout1({ setNumberOfProducts }) {
     initialCall();
   }, []);
 
-  const handleNext = () => {
-    setActiveStep("payment");
-  };
-
   const handleBack = () => {
     setActiveStep("shipping");
+  };
+
+  const makePayment = async () => {
+    const stripe = await loadStripe(STRIPE_KEY);
+
+    const resp = await axios.post(
+      "http://localhost:3001/api/create-checkout-session",
+      {
+        products: cartItems,
+      }
+    );
+
+    // console.log(resp);
+
+    const session = resp.data;
+
+
+    const result = stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
   };
 
   return (
@@ -198,8 +218,8 @@ function Checkout1({ setNumberOfProducts }) {
               </select>
             </div>
             {/* Use shippingData state to populate form fields */}
-            <button onClick={handleNext} className="next-button">
-              Next
+            <button className="next-button" onClick={makePayment}>
+              <p>Pay Now</p>
             </button>
           </div>
         )}

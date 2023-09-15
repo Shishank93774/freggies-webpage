@@ -20,6 +20,10 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Checkout1 from "./components/checkout/Checkout1";
+import { Cancel } from "@mui/icons-material";
+import Success from "./components/success/Success";
+import Offers from "./components/offers/Offers";
+import Deals from "./components/deals/Deals";
 
 function App() {
   const [numberOfProducts, setNumberOfProducts] = useState(0);
@@ -160,20 +164,37 @@ function App() {
           }
         ></Route>
         <Route
+          path="/success"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Success></Success>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/cancel"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Cancel></Cancel>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
           path="/*"
           element={
             <>
               <Navbar numberOfProducts={numberOfProducts}></Navbar>
               <Hero></Hero>
+              <Deals title={"BEST DEALS"}></Deals>
+              <Offers title={"BEST OFFERS"}></Offers>
               <Sliders
                 setNumberOfProducts={setNumberOfProducts}
                 type={"all"}
                 title={"BEST SELLERS"}
-              ></Sliders>
-              <Sliders
-                setNumberOfProducts={setNumberOfProducts}
-                type={"all"}
-                title={"BEST OFFERS"}
               ></Sliders>
               <Sliders
                 setNumberOfProducts={setNumberOfProducts}

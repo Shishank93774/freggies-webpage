@@ -1,0 +1,36 @@
+//Offers.css
+
+
+.slider-container {
+    margin: 10vh auto;
+  }
+  
+  .slider-title {
+    width: 85%;
+    margin: 0 auto;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .offers-container {
+    width: 85%;
+    margin: 0 auto;
+    margin-top: 40px;
+    display: flex;
+    gap: 70px;
+
+  }
+  .offers-container img{
+    width: 320px;
+    height: 350px;
+  }
+ 
+  .offers-container img:hover{
+     scale: calc(0.95);
+  }
+  hr{
+    margin-left: 180px;
+    align-content: center;
+    width:75%;
+  }

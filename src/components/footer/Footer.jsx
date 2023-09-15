@@ -11,7 +11,6 @@ const Footer = () => {
           <div className="container grid grid-four-column">
             <div className="footer-about">
               <h3>Freggies</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
             </div>
             <div className="footer-subscribe">
               <h3>Subscribe to get important updates</h3>
@@ -32,9 +31,7 @@ const Footer = () => {
                   <FaInstagram className="icons" />
                 </div>
                 <div>
-                  <a href="#">
-                    <FaYoutube className="icons" />
-                  </a>
+                  <FaYoutube className="icons" />
                 </div>
               </div>
             </div>

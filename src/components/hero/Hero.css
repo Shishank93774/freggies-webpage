@@ -31,3 +31,16 @@
 .hero-img-container img{
     height: 85vh;
 }
+
+.hero-button{
+    margin-top: 30px;
+    margin-left: 10px;
+    display: flex;
+    gap: 50px;
+}
+
+.hero-button button{
+    width: 12vw;
+    height: 8vh;
+    font-size: 2rem;
+}

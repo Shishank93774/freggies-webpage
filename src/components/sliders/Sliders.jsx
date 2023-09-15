@@ -59,6 +59,7 @@ const Sliders = ({ type, title, setNumberOfProducts }) => {
           ) : (
             <p> {title} </p>
           )}
+          <hr></hr>
         </div>
         <div className="cards-container">
           <Swiper

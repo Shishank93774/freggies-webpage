@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 api
+api2
 node_modules
 dist
 dist-ssr
