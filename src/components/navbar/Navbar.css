@@ -51,23 +51,45 @@
 
 .cart-trolley--link {
   position: relative;
+}
+.cart-trolley {
+  position: relative;
+  font-size: 2.5rem;
+}
 
-  .cart-trolley {
-    position: relative;
-    font-size: 2.5rem;
-  }
+.cart-total--item {
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  background-color: #000;
+  color: #000;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  top: -12%;
+  left: 50%;
+  font-size: 1.3em;
+  background-color: white;
+}
 
-  .cart-total--item {
-    width: 2.4rem;
-    height: 2.4rem;
-    position: absolute;
-    background-color: #000;
-    color: #000;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    top: -20%;
-    left: 70%;
-    background-color: white;
-  }
+#submenu {
+  left: 0;
+  opacity: 0;
+  top: 35px;
+  visibility: hidden;
+  z-index: 1;
+  /* border:2px solid #ccc; */
+}
+
+li:hover ul#submenu {
+  opacity: 1;
+  visibility: visible;
+  top: 80px;
+}
+#submenu li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#submenu li:hover {
+  background-color: rgb(19,  183,  55);
 }

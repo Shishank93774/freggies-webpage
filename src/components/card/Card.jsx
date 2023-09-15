@@ -14,6 +14,7 @@ const Card = ({
   productId,
   showLoginFailure,
   showAddingSuccess,
+  setNumberOfProducts,
 }) => {
   const [qty, setQty] = useState(1);
   discount = Math.max(discount, 5);
@@ -24,6 +25,7 @@ const Card = ({
   const handleAdding = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setQty(1);
     // request to user API to update his cart's data
     if (userEmailString) {
       const userEmail = JSON.parse(userEmailString).email;
@@ -54,6 +56,9 @@ const Card = ({
           boughtProducts: userProducts,
         });
         showAddingSuccess(name, qty);
+        let num = userProducts.reduce((total, item) => total + item.qty, 0);
+        setNumberOfProducts(num);
+        return num;
       } catch (err) {
         console.log(err);
       }
@@ -64,7 +69,6 @@ const Card = ({
       }, 2000);
     }
     // reset current qty
-    setQty(1);
   };
   return (
     <>

@@ -1,0 +1,85 @@
+.checkout-container {
+  display: flex;
+  gap: 250px;
+}
+
+.checkout-page {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+
+  padding: 20px;
+}
+
+.timeline {
+  display: flex;
+  margin-left: 280px;
+  justify-content: space-between;
+  min-width: 30vw;
+  /* margin-bottom: 20px; */
+}
+
+.step {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+}
+
+.step.active {
+  background-color: #047e22;
+  color: white;
+}
+
+.shipping-section,
+.payment-section {
+  min-width: 30vw;
+  margin-left: 280px;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+}
+
+.next-button {
+  padding: 10px 20px;
+  background-color: #047e22;
+  color: white;
+  border: none;
+  justify-content: center;
+  cursor: pointer;
+  height: 50px;
+  width: 90px;
+  margin-top: 40px;
+  margin-left: 230px;
+  margin-bottom: 30px;
+}
+
+.next-button:hover {
+  background-color: #047e22;
+}
+.myacc-form-row input {
+  font-size: 15px;
+  background-color: whitesmoke;
+  width: 220px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 20px;
+}
+.myacc-form-row-address {
+  background-color: whitesmoke;
+  width: 475px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 20px;
+  font-size: 15px;
+}
+
+.myacc-form-row-three input,
+select {
+  font-size: 15px;
+  background-color: whitesmoke;
+  width: 130px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 20px;
+}

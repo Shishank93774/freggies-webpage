@@ -4,11 +4,14 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import { NavLink } from "react-router-dom";
 
-function Cartpage() {
+function Cartpage({ setNumberOfProducts }) {
   const userEmailString = Cookies.get("_auth_state");
   const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
+  const [wasRemoved, setWasRemoved] = useState(false);
   // const addToCart = (product) => {
   //   setCartItems([...cartItems, { ...product, quantity: 1 }]);
   // };
@@ -45,6 +48,7 @@ function Cartpage() {
     await axios.patch("http://localhost:3001/api/users/" + userId, {
       boughtProducts: newUserProducts,
     });
+    setWasRemoved(true);
     setCartItems(newItems);
   };
 
@@ -57,6 +61,7 @@ function Cartpage() {
     await axios.patch("http://localhost:3001/api/users/" + userId, {
       boughtProducts: newUserProducts,
     });
+    setWasRemoved(true);
     setCartItems(newItems);
   };
 
@@ -66,13 +71,16 @@ function Cartpage() {
 
   const getTotalSavings = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price * (item.discount / 100) * item.qty,
+      (total, item) =>
+        total + item.price * (Math.max(5, item.discount) / 100) * item.qty,
       0
     );
   };
 
   const getTotalItems = () => {
-    return cartItems.reduce((total, item) => total + item.qty, 0);
+    let num = cartItems.reduce((total, item) => total + item.qty, 0);
+    setNumberOfProducts(num);
+    return num;
   };
 
   const getUserId = async () => {
@@ -98,7 +106,6 @@ function Cartpage() {
     );
     return userProductsResponse.data;
   };
-
   useEffect(() => {
     const initialCall = async () => {
       if (userEmailString) {
@@ -126,7 +133,7 @@ function Cartpage() {
               };
             })
           );
-
+          setWasRemoved(true);
           setCartItems(items);
         } catch (err) {
           console.log(err);
@@ -144,33 +151,41 @@ function Cartpage() {
         <div className="cart-page">
           <div className="cart-items">
             <h1>Cart</h1>
-            {cartItems.map((item, index) => (
-              <div className="cart-item" key={item._id}>
-                <div className="product-image">
-                  <img
-                    src={item.photoArray[0].url}
-                    alt={item.name}
-                    className="card-image"
-                  />
-                </div>
-                <div className="product-info">
-                  <p>{item.name}</p>
-                  <p>Rs.{item.price}</p>
-                </div>
+            {wasRemoved ? (
+              cartItems.map((item) => (
+                <div className="cart-item" key={item._id}>
+                  <div className="product-image">
+                    <img
+                      src={item.photoArray[0].url}
+                      alt={item.name}
+                      className="card-image"
+                    />
+                  </div>
+                  <div className="product-info">
+                    <p>{item.name}</p>
+                    <p>Rs.{item.price}</p>
+                  </div>
 
-                <div className="quantity-controls">
-                  <button onClick={() => decreaseQuantity(item._id)}>-</button>
-                  <p>{item.qty}</p>
-                  <button onClick={() => increaseQuantity(item._id)}>+</button>
+                  <div className="quantity-controls">
+                    <button onClick={() => decreaseQuantity(item._id)}>
+                      -
+                    </button>
+                    <p>{item.qty}</p>
+                    <button onClick={() => increaseQuantity(item._id)}>
+                      +
+                    </button>
+                  </div>
+                  <button
+                    className="remove-button"
+                    onClick={() => removeProduct(item._id)}
+                  >
+                    Remove
+                  </button>
                 </div>
-                <button
-                  className="remove-button"
-                  onClick={() => removeProduct(item._id)}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
+              ))
+            ) : (
+              <CircularProgress></CircularProgress>
+            )}
           </div>
 
           <div className="order-summarry">
@@ -199,14 +214,35 @@ function Cartpage() {
                 </div>
                 <div className="details">
                   {" "}
-                  <p>Rs.{getTotalPrice().toFixed(2)} </p>
+                  <p>Rs. {getTotalPrice().toFixed(2)} </p>
                 </div>
                 <div className="details">
                   {" "}
-                  <p>Rs.{getTotalSavings().toFixed(2)}</p>
+                  <p>
+                    Rs.
+                    <span
+                      style={{
+                        color: "green",
+                      }}
+                    >
+                      {" "}
+                      {getTotalSavings().toFixed(2)}{" "}
+                    </span>{" "}
+                  </p>
                 </div>
                 <div className="details">
-                  <p>Rs.0</p>
+                  <p>
+                    Rs.{" "}
+                    <span
+                      style={{
+                        color: "red",
+                      }}
+                    >
+                      {cartItems.length
+                        ? Math.round(getTotalPrice() * 0.02)
+                        : "0"}{" "}
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -217,7 +253,12 @@ function Cartpage() {
               </div>
               <div className="detail-values">
                 <p className="price-details">
-                  Rs.{(getTotalPrice() - getTotalSavings()).toFixed(2)}
+                  Rs.{" "}
+                  {(
+                    getTotalPrice() -
+                    getTotalSavings() +
+                    Math.round(getTotalPrice() * 0.02)
+                  ).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -225,7 +266,7 @@ function Cartpage() {
         </div>
 
         <div className="total-price">
-          <p>Checkout Now!</p>
+          <NavLink to={"/checkout"}>Checkout Now!</NavLink>
         </div>
       </div>
     </>

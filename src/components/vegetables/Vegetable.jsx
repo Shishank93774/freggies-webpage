@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const itemsPerPage = 12;
 
-function Vegetable() {
+function Vegetable({ setNumberOfProducts }) {
   const [minPrice, setMinPrice] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [maxPrice, setMaxPrice] = useState("");
@@ -87,10 +87,13 @@ function Vegetable() {
     };
     getAllFruits();
   }, []);
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -164,6 +167,7 @@ function Vegetable() {
                 productId={product._id}
                 showLoginFailure={showLoginFailure}
                 showAddingSuccess={showAddingSuccess}
+                setNumberOfProducts={setNumberOfProducts}
               ></Card>
             ))}
           </div>

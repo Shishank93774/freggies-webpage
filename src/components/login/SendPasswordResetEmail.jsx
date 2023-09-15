@@ -1,6 +1,7 @@
 import { TextField, Button, Box, Alert, Grid } from "@mui/material";
 
 import { useState } from "react";
+import axios from "axios";
 
 const SendPasswordResetEmail = () => {
   const [error, setError] = useState({
@@ -8,27 +9,40 @@ const SendPasswordResetEmail = () => {
     msg: "",
     type: "",
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const actualData = {
-      email: data.get("email"),
-    };
-    //console.log(actualData);
-    if (actualData.email) {
+    try {
+      const data = new FormData(e.currentTarget);
+      const actualData = {
+        email: data.get("email"),
+      };
       console.log(actualData);
+      if (actualData.email) {
+        // console.log(actualData);
+        const resp = await axios.post(
+          "http://localhost:3001/api/users/forgot-password",
+          {
+            email: actualData.email,
+          }
+        );
+        console.log(resp.data.link);
+        // document.getElementById("password-reset-email-form").reset();
+        setError({
+          status: true,
+          msg: "Password Reset Email Sent. Check your Email!",
+          type: "success",
+        });
+      } else {
+        setError({
+          status: true,
+          msg: "Please provide valid Email.",
+          type: "error",
+        });
+      }
+    } catch (err) {
+      alert("No User of this email exists");
       document.getElementById("password-reset-email-form").reset();
-      setError({
-        status: true,
-        msg: "Password Reset Email Sent. Check your Email!",
-        type: "success",
-      });
-    } else {
-      setError({
-        status: true,
-        msg: "Please provide valid Email.",
-        type: "error",
-      });
+      console.log(err);
     }
   };
   return (

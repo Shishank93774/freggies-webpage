@@ -6,17 +6,15 @@ import CommonSection from "../commonsection/CommonSection";
 import "./Fruits.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 const itemsPerPage = 12;
 
-function Fruits() {
+function Fruits({ setNumberOfProducts }) {
   const [minPrice, setMinPrice] = useState("");
   const [sortBy, setSortBy] = useState("default");
   const [maxPrice, setMaxPrice] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-
   const showLoginFailure = () => toast.warning("Please login first!");
   const showAddingSuccess = () => toast.success(`Item added successfully`);
   const handlePageChange = ({ selected }) => {
@@ -87,10 +85,14 @@ function Fruits() {
     getAllFruits();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -164,6 +166,7 @@ function Fruits() {
                 productId={product._id}
                 showAddingSuccess={showAddingSuccess}
                 showLoginFailure={showLoginFailure}
+                setNumberOfProducts={setNumberOfProducts}
               ></Card>
             ))}
           </div>

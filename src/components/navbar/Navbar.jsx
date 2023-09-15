@@ -2,9 +2,11 @@ import "./Navbar.css";
 import Cookies from "js-cookie";
 import { FiShoppingCart } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
+import { ProductionQuantityLimits } from "@mui/icons-material";
 
-const Navbar = () => {
+const Navbar = ({ numberOfProducts }) => {
   const account = Cookies.get("freggie-firstname") || "Account";
+
   return (
     <div className="navbar-container">
       <div className="title-container">Freggies</div>
@@ -14,16 +16,26 @@ const Navbar = () => {
             {" "}
             <NavLink to="/"> Home </NavLink>{" "}
           </li>
-          {account === "Account" && (
-            <li className="link">
+          {account === "Account" ? (
+            <li className="link dropper">
               {" "}
               <NavLink to="/login"> Login/SignUp </NavLink>{" "}
+              <ul id="submenu">
+                <li className="link">
+                  {" "}
+                  <NavLink to="/myaccount"> {account} </NavLink>{" "}
+                </li>
+                <li>
+                  <a href="">Logout</a>
+                </li>
+              </ul>
+            </li>
+          ) : (
+            <li className="link">
+              {" "}
+              <NavLink to="/myaccount"> {account} </NavLink>{" "}
             </li>
           )}
-          <li className="link">
-            {" "}
-            <NavLink to="/myaccount"> {account} </NavLink>{" "}
-          </li>
           <li className="link">
             {" "}
             <NavLink to="/fruits"> Fruits </NavLink>{" "}
@@ -41,6 +53,7 @@ const Navbar = () => {
               {" "}
               <FiShoppingCart className="cart-trolley" />{" "}
             </NavLink>
+            <span className="cart-total--item">{numberOfProducts || "❗"}</span>
           </li>
         </ul>
       </div>

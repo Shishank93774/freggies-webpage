@@ -52,7 +52,7 @@ const UserLogin = () => {
         setError({ status: true, msg: "Login Success", type: "success" });
         showSuccess();
         setTimeout(() => {
-          navigate("/myaccount");
+          window.location.href = "http://localhost:5173/"
         }, 3000);
       } catch (err) {
         console.log("MYerr", err);
@@ -66,7 +66,7 @@ const UserLogin = () => {
   return (
     <>
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
