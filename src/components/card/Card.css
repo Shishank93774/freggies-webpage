@@ -1,0 +1,155 @@
+/* .card-container {
+  margin-left: 50px;
+  max-width: 250px;
+  min-height: 400px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-container:hover{
+  cursor: pointer;
+  scale: calc(1.04);
+  box-shadow: 0 8px 6px -6px black;
+}
+
+.card-img-container {
+  padding: 10px;
+  position: relative;
+}
+
+.card-discount-overlay{
+  position: absolute;
+  top: 20px;
+  width: 230px;
+  background-color: white;
+  color: #ba5253;
+  border-radius: 5px;
+  box-shadow: 0 8px 6px -6px gray;
+  text-align: right;
+}
+
+.card-discount{
+  padding-right: 20px;
+}
+
+.card-img-container img {
+  height: 230px;
+}
+
+.card-body{
+  height: 150px;
+}
+
+.card-price{
+  margin-bottom: 10px;
+}
+
+.card-desc{
+  font-size: .8rem;
+}
+
+.card-bottom { */
+  /* bottom: 50px; */
+  /* padding: 40px 10px;
+  padding-top: 50px;
+  display: flex; */
+  /* position: absolute; */
+  /* background-color: #F7F6F6;
+}
+
+.card-qty-show {
+  width: 20%;
+  height: 25px;
+}
+
+.card-bottom button{
+  background-color: green;
+  width: 50px;
+  height: 25px;
+} */
+
+.card-container {
+  margin-left: 50px;
+  max-width: 250px;
+  padding: 10px;
+  margin-right: 20px;
+  min-height: 350px;
+  position: relative;
+  overflow: hidden;
+  /* border-radius: 15px; */
+  border:1px solid #ddd ;
+  background-color: #fff;
+  margin-bottom: 40px;
+}
+
+.card-container:hover{
+  cursor: pointer;
+  scale: calc(1.04);
+  box-shadow: 0 8px 6px -6px black;
+}
+
+.card-img-container {
+  padding: 10px;
+  position: relative;
+}
+
+.card-discount-overlay{
+  position: absolute;
+  top: 20px;
+  width: 70px;
+  background-color: white;
+  color: #ba5253;
+  border-radius: 5px;
+  box-shadow: 0 8px 6px -6px gray;
+  text-align: right;
+}
+
+.card-discount{
+  padding-right: 20px;
+}
+
+.card-img-container img {
+  height: 150px;
+}
+
+.card-body{
+  height: 70px;
+}
+
+.card-price{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card-desc{
+  font-size: .8rem;
+}
+
+.card-bottom {
+  /* bottom: 50px; */
+  padding: 7px 25px;
+  padding-top: 20px;
+  display: flex;
+  /* position: absolute; */
+  background-color: #F7F6F6;
+}
+
+.card-qty-show {
+  width: 15%;
+  height: 25px;
+  align-content: center;
+}
+
+.card-add{
+  background-color: #2b992f);
+  width: 50px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.card-operator
+{
+  background-color: #2b992f;
+  width: 30px;
+  height: 25px;
+}

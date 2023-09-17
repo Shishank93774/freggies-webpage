@@ -10,5 +10,7 @@ Currently, two official plugins are available:
 
 To run:
 1. go to cloned directory, open terminal and enter: "npm install"
+4. go to temp git checkout temp
 2. then enter "npm run dev"
 3. go to the localhost link :)
+

@@ -1,72 +1,220 @@
-import './App.css'
-import Contact from './components/contact/Contact';
-import Events from './components/Events/Events';
-import Footer from './components/footer/Footer';
-import Hero from './components/hero/Hero';
-import Navbar from './components/navbar/navbar';
-import Sliders from './components/sliders/Sliders';
-
-const cardsData = [
-  {
-    label: "Handbag",
-    alt: "image3",
-    url: "https://static.wixstatic.com/media/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg",
-    price: "499"
-  },
-  {
-    label: "Sweater",
-    alt: "image4",
-    url: "https://static.wixstatic.com/media/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg",
-    price: "2,099"
-  },
-  {
-    label: "Flower Vase",
-    alt: "image5",
-    url: "https://static.wixstatic.com/media/22e53e_2fee033b2eca46cab4eec7fa74e99c31~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_2fee033b2eca46cab4eec7fa74e99c31~mv2.jpg",
-    price: "1,099"
-  },
-  {
-    label: "T-Shirt",
-    alt: "image6",
-    url: "https://static.wixstatic.com/media/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg",
-    price: "449"
-  },
-]
-;
-const cardsData2 = [
-  {
-    label: "Handbag",
-    alt: "image3",
-    url: "https://static.wixstatic.com/media/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_efc1552d8050407f82ea158302d0debd~mv2.jpg",
-    price: "499"
-  },
-  {
-    label: "Sweater",
-    alt: "image4",
-    url: "https://static.wixstatic.com/media/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_01575d792adb43a6a16595bd74a1cc8d~mv2.jpg",
-    price: "2,099"
-  },
-  {
-    label: "T-Shirt",
-    alt: "image6",
-    url: "https://static.wixstatic.com/media/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg/v1/fill/w_663,h_663,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/22e53e_8adb0d7018b047e0a998acf987fd3fd6~mv2.jpg",
-    price: "449"
-  },
-];
+import "./App.css";
+import Contact from "./components/contact/Contact";
+import Events from "./components/Events/Events";
+import Footer from "./components/footer/Footer";
+import Footer2 from "./components/footer/Footer2";
+import Hero from "./components/hero/Hero";
+import Myaccount from "./components/myaccount/Myaccount";
+import Navbar from "./components/navbar/navbar";
+import Sliders from "./components/sliders/Sliders";
+import Fruits from "./components/fruits/Fruits";
+import Vegetable from "./components/vegetables/Vegetable";
+import Cartpage from "./components/cartpage/Cartpage";
+import LoginReg from "./components/login/LoginReg";
+import ResetPassword from "./components/login/ResetPassword";
+import SendPasswordResetEmail from "./components/login/SendPasswordResetEmail";
+import Prediction from "./components/prediction/Prediction";
+import { Routes, Route } from "react-router";
+import { RequireAuth } from "react-auth-kit";
+import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Checkout1 from "./components/checkout/Checkout1";
+import { Cancel } from "@mui/icons-material";
+import Success from "./components/success/Success";
+import Offers from "./components/offers/Offers";
+import Deals from "./components/deals/Deals";
 
 function App() {
+  const [numberOfProducts, setNumberOfProducts] = useState(0);
+  const userEmailString = Cookies.get("_auth_state");
+  const getUserId = async () => {
+    if (userEmailString) {
+      const userEmail = JSON.parse(userEmailString).email;
+      try {
+        const userIdResponse = await axios.get(
+          "http://localhost:3001/api/users/getUserId/" + userEmail
+        );
+        const userId = userIdResponse.data;
+        return userId;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const getUserProducts = async (userId) => {
+    const userProductsResponse = await axios.get(
+      "http://localhost:3001/api/users/" + userId + "/products"
+    );
+    return userProductsResponse.data;
+  };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    const initialCall = async () => {
+      if (userEmailString) {
+        try {
+          const userId = await getUserId();
+          const userProducts = await getUserProducts(userId);
+          let num = userProducts.reduce((total, item) => total + item.qty, 0);
+          setNumberOfProducts(num);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        setNumberOfProducts(0);
+      }
+    };
+    initialCall();
+  }, []);
   return (
     <>
-      <Navbar></Navbar>
-      <Hero></Hero>
-      <Sliders data={cardsData} title={"BEST SELLERS"}></Sliders>
-      <Sliders data={cardsData2} title={"BEST OFFERS"}></Sliders>
-      <Sliders data={cardsData} title={"KITCHEN MUST HAVE's"}></Sliders>
-      <Events></Events>
-      <Contact></Contact>
-      <Footer></Footer>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <LoginReg></LoginReg>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/sendpasswordresetemail"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <SendPasswordResetEmail></SendPasswordResetEmail>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/reset-password"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <ResetPassword></ResetPassword>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/cart"
+          element={
+            <RequireAuth loginPath="/login">
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Cartpage setNumberOfProducts={setNumberOfProducts}></Cartpage>
+              <Footer></Footer>
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/myaccount"
+          element={
+            <RequireAuth loginPath="/login">
+              <>
+                <Navbar numberOfProducts={numberOfProducts}></Navbar>
+                <Myaccount></Myaccount>
+                <Footer2></Footer2>
+              </>
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/vegetables"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Vegetable setNumberOfProducts={setNumberOfProducts}></Vegetable>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/fruits"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Fruits setNumberOfProducts={setNumberOfProducts}></Fruits>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/prediction"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Prediction></Prediction>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/checkout"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Checkout1 setNumberOfProducts={setNumberOfProducts}></Checkout1>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/success"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Success></Success>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/cancel"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Cancel></Cancel>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+        <Route
+          path="/*"
+          element={
+            <>
+              <Navbar numberOfProducts={numberOfProducts}></Navbar>
+              <Hero></Hero>
+              <Deals title={"BEST DEALS"}></Deals>
+              <Offers title={"BEST OFFERS"}></Offers>
+              <Sliders
+                setNumberOfProducts={setNumberOfProducts}
+                type={"all"}
+                title={"BEST SELLERS"}
+              ></Sliders>
+              <Sliders
+                setNumberOfProducts={setNumberOfProducts}
+                type={"fruits"}
+                title={"FRUITS"}
+              ></Sliders>
+              <Sliders
+                setNumberOfProducts={setNumberOfProducts}
+                type={"vegetables"}
+                title={"VEGETABLES"}
+              ></Sliders>
+              <Events></Events>
+              <Contact></Contact>
+              <Footer></Footer>
+            </>
+          }
+        ></Route>
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

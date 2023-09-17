@@ -32,6 +32,11 @@
     margin-right: 40px;
 }
 
+.event-card:hover {
+    cursor: pointer;
+    scale: calc(1.04);
+}
+
 .event-card-img-container img{
     width: 430px;
     height: 320px;

@@ -1,0 +1,40 @@
+.loginreg-grid {
+}
+.loginreg-grid-pic {
+  padding-bottom: 20px;
+  background-color: rgb(249, 255, 255);
+}
+.loginreg-tabs {
+  align-items: center;
+  color: blue;
+}
+.loginreg-login {
+  margin-bottom: 10px;
+}
+.loginreg-box1 {
+  padding-top: 10px;
+  padding-left: 55px;
+  padding-right: 55px;
+  padding-bottom: 20px;
+}
+.regis-tabs {
+  width: 300px;
+}
+.regis-tabs-side {
+  width: 300px;
+}
+.checkbox-label {
+  padding-top: 50px;
+}
+.user-checkbox {
+  margin-right: 10px;
+}
+.name-field {
+  margin-top: 40px;
+  display: flex;
+  gap: 50px;
+}
+.pass-field {
+  display: flex;
+  gap: 50px;
+}

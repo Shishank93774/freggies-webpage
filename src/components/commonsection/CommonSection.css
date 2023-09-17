@@ -1,0 +1,17 @@
+.common__section {
+  width: 100%;
+  background: linear-gradient(#02682eb2, #078720b2),
+    url("https://png.pngtree.com/thumb_back/fh260/back_our/20190622/ourmid/pngtree-fruit-and-vegetable-banner-image_208243.jpg");
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 40px 0px 80px 0px;
+}
+
+.text-white {
+  font-size: 50px;
+  color: #fff;
+  margin-left: 148px;
+  align-self: center;
+}
